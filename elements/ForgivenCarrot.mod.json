@@ -1,0 +1,47 @@
+{
+  "_fv": 34,
+  "_type": "item",
+  "definition": {
+    "renderType": 0,
+    "texture": "forgiven_carrot",
+    "customModelName": "Normal",
+    "name": "Forgiven Carrot",
+    "rarity": "EPIC",
+    "creativeTab": {
+      "value": "CUSTOM:Jean"
+    },
+    "stackSize": 64,
+    "enchantability": 0,
+    "useDuration": 32,
+    "toolType": 1.0,
+    "damageCount": 0,
+    "recipeRemainder": {
+      "value": ""
+    },
+    "destroyAnyBlock": false,
+    "immuneToFire": true,
+    "stayInGridWhenCrafting": false,
+    "damageOnCrafting": false,
+    "enableMeleeDamage": false,
+    "damageVsEntity": 0.0,
+    "specialInfo": [
+      "The carrot of Jean"
+    ],
+    "hasGlow": true,
+    "guiBoundTo": "<NONE>",
+    "inventorySize": 9,
+    "inventoryStackSize": 64,
+    "onFinishUsingItem": {
+      "name": "ForgivenCarrotPlayerFinishesUsingItem"
+    },
+    "isFood": true,
+    "nutritionalValue": -3,
+    "saturation": -0.5,
+    "eatResultItem": {
+      "value": ""
+    },
+    "isMeat": false,
+    "isAlwaysEdible": true,
+    "animation": "eat"
+  }
+}

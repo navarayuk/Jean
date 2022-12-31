@@ -1,0 +1,44 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="All Rights Reserved"
+
+[[mods]]
+modId="jean"
+version="0.0.0.1"
+displayName="Jean"
+credits="CalixFoxUK for the idea, Mod creation BadKaiPanda"
+displayURL="https://kukki.co.uk"
+logoFile="logo.png"
+authors="CalixFoxUK, BadKaiPanda,(NavaRayUK)"
+description='''
+Jean, The Spirit of the Dragon
+'''
+
+[[dependencies.jean]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5]"
+    ordering="NONE"
+    side="BOTH"
+
+
+
+[[dependencies.jean]]
+    modId="jade"
+    mandatory=false
+    versionRange="[0,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.jean]]
+    modId="reauth"
+    mandatory=false
+    versionRange="[0,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.jean]]
+    modId="jei"
+    mandatory=false
+    versionRange="[0,)"
+    ordering="NONE"
+    side="BOTH"
+

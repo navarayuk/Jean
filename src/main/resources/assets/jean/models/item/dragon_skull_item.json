@@ -1,0 +1,7 @@
+{
+  "parent": "jean:custom/jean",
+  "textures": {
+    "1": "jean:blocks/jean",
+    "particle": "jean:items/skinned"
+  }
+}

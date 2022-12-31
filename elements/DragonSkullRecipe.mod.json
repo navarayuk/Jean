@@ -1,0 +1,46 @@
+{
+  "_fv": 34,
+  "_type": "recipe",
+  "definition": {
+    "recipeType": "Crafting",
+    "xpReward": 0.0,
+    "cookingTime": 200,
+    "recipeRetstackSize": 1,
+    "group": "",
+    "recipeShapeless": false,
+    "recipeSlots": [
+      {
+        "value": "Items.FLINT"
+      },
+      {
+        "value": ""
+      },
+      {
+        "value": "Items.FLINT"
+      },
+      {
+        "value": ""
+      },
+      {
+        "value": "Items.SKULL#5"
+      },
+      {
+        "value": ""
+      },
+      {
+        "value": "Items.FLINT"
+      },
+      {
+        "value": ""
+      },
+      {
+        "value": "Items.FLINT"
+      }
+    ],
+    "recipeReturnStack": {
+      "value": "CUSTOM:DragonSkull"
+    },
+    "name": "dragon_skull_recipe",
+    "namespace": "mod"
+  }
+}

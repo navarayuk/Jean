@@ -1,0 +1,528 @@
+{
+  "mod_elements": [
+    {
+      "name": "DragonSkull",
+      "type": "block",
+      "sortid": 1,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "dragon_skull",
+      "path": "~/heads"
+    },
+    {
+      "name": "DragonSkullBlockAdded",
+      "type": "procedure",
+      "sortid": 3,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "dragon_skull_block_added",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ]
+      },
+      "path": "~/heads"
+    },
+    {
+      "name": "DragonSkullRecipe",
+      "type": "recipe",
+      "sortid": 4,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "dragon_skull_recipe",
+      "path": "~/recipes"
+    },
+    {
+      "name": "Skinned",
+      "type": "achievement",
+      "sortid": 5,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "skinned",
+      "path": "~/adv"
+    },
+    {
+      "name": "DragonCrafted",
+      "type": "procedure",
+      "sortid": 6,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "dragon_crafted",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "itemstack",
+            "type": "itemstack"
+          }
+        ]
+      },
+      "path": "~/heads"
+    },
+    {
+      "name": "RightClickHead",
+      "type": "procedure",
+      "sortid": 7,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "right_click_head",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ]
+      },
+      "path": "~/heads"
+    },
+    {
+      "name": "Wearing",
+      "type": "achievement",
+      "sortid": 8,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "wearing",
+      "path": "~/adv"
+    },
+    {
+      "name": "WearingJean",
+      "type": "procedure",
+      "sortid": 9,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "wearing_jean",
+      "metadata": {
+        "return_type": "actionresulttype",
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "sourceentity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ]
+      },
+      "path": "~/heads"
+    },
+    {
+      "name": "MoreSkulls",
+      "type": "procedure",
+      "sortid": 10,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "more_skulls",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "sourceentity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ]
+      },
+      "path": "~/heads"
+    },
+    {
+      "name": "BlockPlace",
+      "type": "procedure",
+      "sortid": 11,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "block_place",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ]
+      },
+      "path": "~/heads"
+    },
+    {
+      "name": "WallDragonSkull",
+      "type": "block",
+      "sortid": 12,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "wall_dragon_skull",
+      "path": "~/heads"
+    },
+    {
+      "name": "TakingAimJean",
+      "type": "achievement",
+      "sortid": 13,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "taking_aim_jean",
+      "path": "~/adv"
+    },
+    {
+      "name": "DragonSkullOnBlockRightClicked",
+      "type": "procedure",
+      "sortid": 14,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "dragon_skull_on_block_right_clicked",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ]
+      },
+      "path": "~/heads"
+    },
+    {
+      "name": "BoneArrowHead",
+      "type": "item",
+      "sortid": 15,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "bone_arrow_head",
+      "path": "~/items"
+    },
+    {
+      "name": "ArrowHead",
+      "type": "tag",
+      "sortid": 16,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "arrow_head",
+      "path": "~/tags"
+    },
+    {
+      "name": "NewArrowRecipe",
+      "type": "recipe",
+      "sortid": 17,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "new_arrow_recipe",
+      "path": "~/recipes"
+    },
+    {
+      "name": "Sticks",
+      "type": "tag",
+      "sortid": 18,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "sticks",
+      "path": "~/tags"
+    },
+    {
+      "name": "Feathers",
+      "type": "tag",
+      "sortid": 19,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "feathers",
+      "path": "~/tags"
+    },
+    {
+      "name": "DragonSkullItem",
+      "type": "item",
+      "sortid": 20,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "dragon_skull_item",
+      "path": "~/heads"
+    },
+    {
+      "name": "ChangeBlockToItem",
+      "type": "procedure",
+      "sortid": 21,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "change_block_to_item",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ]
+      },
+      "path": "~/heads"
+    },
+    {
+      "name": "DragonsEye",
+      "type": "item",
+      "sortid": 22,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "dragons_eye",
+      "path": "~/items"
+    },
+    {
+      "name": "JeanDragonsCryingEye",
+      "type": "item",
+      "sortid": 23,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "jean_dragons_crying_eye",
+      "path": "~/items"
+    },
+    {
+      "name": "JeanCry",
+      "type": "achievement",
+      "sortid": 25,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "jean_cry",
+      "path": "~/adv"
+    },
+    {
+      "name": "ShowEye",
+      "type": "procedure",
+      "sortid": 26,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "show_eye",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ]
+      },
+      "path": "~/heads"
+    },
+    {
+      "name": "Jean",
+      "type": "tab",
+      "sortid": 27,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "jean"
+    },
+    {
+      "name": "ForgivenCarrot",
+      "type": "item",
+      "sortid": 28,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "forgiven_carrot",
+      "path": "~/items"
+    },
+    {
+      "name": "JeanForgivesYou",
+      "type": "achievement",
+      "sortid": 29,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "jean_forgives_you",
+      "path": "~/adv"
+    },
+    {
+      "name": "ForgivenCarrotPlayerFinishesUsingItem",
+      "type": "procedure",
+      "sortid": 30,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "forgiven_carrot_player_finishes_using_item",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ]
+      },
+      "path": "~/items"
+    },
+    {
+      "name": "ForgiveMeFood",
+      "type": "recipe",
+      "sortid": 31,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "forgive_me_food",
+      "path": "~/recipes"
+    }
+  ],
+  "variable_elements": [
+    {
+      "name": "PlayerEye",
+      "type": "logic",
+      "scope": "player_persistent",
+      "value": "false"
+    }
+  ],
+  "sound_elements": [],
+  "language_map": {
+    "en_us": {
+      "block.test.dragon_skull": "Dragon Skull",
+      "advancements.skinned.descr": "Skinned the Dragons head",
+      "item.jean.dragon_skull_item": "Dragon Skull",
+      "advancements.taking_aim_jean.descr": "Took aim with Jeans Skinned head while holding arrows",
+      "advancements.jean_cry.descr": "Killed a donky/mule with Jeans power",
+      "advancements.jean_forgives_you.title": "Jean Forgives You",
+      "item.jean.bone_arrow_head": "Bone Arrow Head",
+      "message.jean.willnothelp": "I shall not help you",
+      "item.jean.dragons_eye": "Dragons Eye",
+      "advancements.jean_cry.title": "Your made Jean cry",
+      "advancements.jean_forgives_you.descr": "Eaten your way to the top",
+      "block.test.dragon_skull_wall": "Dragon Skull",
+      "advancements.taking_aim_jean.title": "Jean let\u0027s it rip",
+      "item.jean.jean_dragons_crying_eye": "Jean Dragons Crying Eye",
+      "block.jean.dragon_skull": "Dragon Skull",
+      "block.jean.wall_dragon_skull": "Dragon Skull",
+      "advancements.wearing.descr": "Stuck your head in Jean\u0027s",
+      "item.jean.forgiven_carrot": "Forgiven Carrot",
+      "death.attack.jean.abused": "%1$s tried to steal Jeans powers, she said no!",
+      "death.attack.jean.lovekiller": "%1$s killed Jeans love, so her spirit smote them.",
+      "message.jean.title": "§5[Jean]§r: ",
+      "advancements.skinned.title": "Skinned Jean",
+      "itemGroup.tabjean": "Jean",
+      "advancements.wearing.title": "Wearing Jean"
+    }
+  },
+  "foldersRoot": {
+    "name": "~",
+    "children": [
+      {
+        "name": "heads",
+        "children": []
+      },
+      {
+        "name": "adv",
+        "children": []
+      },
+      {
+        "name": "tags",
+        "children": []
+      },
+      {
+        "name": "recipes",
+        "children": []
+      },
+      {
+        "name": "items",
+        "children": []
+      }
+    ]
+  },
+  "workspaceSettings": {
+    "modid": "jean",
+    "modName": "Jean",
+    "version": "0.0.0.1",
+    "description": "Jean, The Spirit of the Dragon",
+    "author": "CalixFoxUK, BadKaiPanda,(NavaRayUK)",
+    "websiteURL": "https://kukki.co.uk",
+    "license": "All Rights Reserved",
+    "disableForgeVersionCheck": true,
+    "serverSideOnly": false,
+    "modPicture": "logo",
+    "requiredMods": [],
+    "dependencies": [],
+    "dependants": [],
+    "mcreatorDependencies": [
+      "jade",
+      "reauth",
+      "jei"
+    ],
+    "currentGenerator": "forge-1.16.5",
+    "credits": "CalixFoxUK for the idea, Mod creation BadKaiPanda",
+    "modElementsPackage": "uk.co.kukki.jean",
+    "lockBaseModFiles": false
+  },
+  "mcreatorVersion": 202200348217
+}

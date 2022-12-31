@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:dragon_head"
+    },
+    "title": {
+      "translate": "advancements.taking_aim_jean.title"
+    },
+    "description": {
+      "translate": "advancements.taking_aim_jean.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "taking_aim_jean": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "jean:wearing"
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "jean:block/dragon_skull"
+    },
+    "facing=east": {
+      "model": "jean:block/dragon_skull",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "jean:block/dragon_skull",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "jean:block/dragon_skull",
+      "y": 270
+    }
+  }
+}

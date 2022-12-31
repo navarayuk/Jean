@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "jean:forgiven_carrot"
+    },
+    "title": {
+      "translate": "advancements.jean_forgives_you.title"
+    },
+    "description": {
+      "translate": "advancements.jean_forgives_you.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "jean_forgives_you": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 15
+  },
+  "parent": "jean:jean_cry"
+}

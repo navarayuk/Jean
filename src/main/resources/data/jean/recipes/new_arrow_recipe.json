@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A",
+    "S",
+    "F"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:arrow/head"
+    },
+    "S": {
+      "tag": "forge:stick"
+    },
+    "F": {
+      "tag": "forge:feathers"
+    }
+  },
+  "result": {
+    "item": "minecraft:arrow",
+    "count": 4
+  }
+}

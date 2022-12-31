@@ -1,0 +1,21 @@
+{
+  "_fv": 34,
+  "_type": "tag",
+  "definition": {
+    "type": "Items",
+    "items": [
+      {
+        "value": "Items.FLINT"
+      },
+      {
+        "value": "CUSTOM:BoneArrowHead"
+      }
+    ],
+    "blocks": [],
+    "functions": [],
+    "entities": [],
+    "biomes": [],
+    "name": "arrow/head",
+    "namespace": "forge"
+  }
+}

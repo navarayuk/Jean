@@ -1,0 +1,30 @@
+{
+  "_fv": 34,
+  "_type": "tag",
+  "definition": {
+    "type": "Items",
+    "items": [
+      {
+        "value": "Items.CARROT_ON_A_STICK"
+      },
+      {
+        "value": "Items.WARPED_FUNGUS_ON_A_STICK"
+      },
+      {
+        "value": "Items.STICK"
+      },
+      {
+        "value": "Items.DEBUG_STICK"
+      },
+      {
+        "value": "Items.BONE"
+      }
+    ],
+    "blocks": [],
+    "functions": [],
+    "entities": [],
+    "biomes": [],
+    "name": "stick",
+    "namespace": "forge"
+  }
+}

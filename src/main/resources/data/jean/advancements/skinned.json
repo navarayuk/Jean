@@ -1,0 +1,23 @@
+{
+  "display": {
+    "background": "minecraft:textures/block/stone.png",
+    "icon": {
+      "item": "jean:dragon_skull"
+    },
+    "title": {
+      "translate": "advancements.skinned.title"
+    },
+    "description": {
+      "translate": "advancements.skinned.descr"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "skinned": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}
