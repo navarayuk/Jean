@@ -504,8 +504,8 @@
     "modid": "jean",
     "modName": "Jean",
     "version": "0.0.0.1",
-    "description": "Jean ",
-    "author": "CalixFoxUK, BadKaiPanda",
+    "description": "Jean, The Spirit of the Dragon",
+    "author": "CalixFoxUK, BadKaiPanda,(NavaRayUK)",
     "websiteURL": "https://kukki.co.uk",
     "license": "All Rights Reserved",
     "disableForgeVersionCheck": true,
@@ -519,9 +519,9 @@
       "reauth",
       "jei"
     ],
-    "currentGenerator": "forge-1.16.5",
-    "credits": "CalixFoxUK for the idea, Mod creation BadKaiPanda",
-    "modElementsPackage": "com.drblockheadmc.jean",
+    "currentGenerator": "forge-1.18.2",
+    "credits": "CalixFoxUK for the idea, Mod creation BadKaiPanda,(NavaRayUK)",
+    "modElementsPackage": "uk.co.kukki.jean",
     "lockBaseModFiles": false
   },
   "mcreatorVersion": 202200348217

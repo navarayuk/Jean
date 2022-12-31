@@ -436,15 +436,6 @@
       "locked_code": false,
       "registry_name": "forgive_me_food",
       "path": "~/recipes"
-    },
-    {
-      "name": "BoneArrowHeadRecipe",
-      "type": "recipe",
-      "sortid": 32,
-      "compiles": true,
-      "locked_code": false,
-      "registry_name": "bone_arrow_head_recipe",
-      "path": "~/recipes"
     }
   ],
   "variable_elements": [
@@ -528,8 +519,8 @@
       "reauth",
       "jei"
     ],
-    "currentGenerator": "forge-1.16.5",
-    "credits": "CalixFoxUK for the idea, Mod creation BadKaiPanda",
+    "currentGenerator": "forge-1.18.2",
+    "credits": "CalixFoxUK for the idea, Mod creation BadKaiPanda,(NavaRayUK)",
     "modElementsPackage": "uk.co.kukki.jean",
     "lockBaseModFiles": false
   },

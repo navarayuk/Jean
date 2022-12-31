@@ -1,271 +1,199 @@
 package uk.co.kukki.jean.procedures;
 
-import uk.co.kukki.jean.item.DragonSkullItemItem;
-import uk.co.kukki.jean.block.DragonSkullBlock;
-import uk.co.kukki.jean.JeanMod;
+import uk.co.kukki.jean.init.JeanModItems;
+import uk.co.kukki.jean.init.JeanModBlocks;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
-import net.minecraft.world.World;
-import net.minecraft.world.IWorld;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.DamageSource;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.item.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.passive.horse.MuleEntity;
-import net.minecraft.entity.passive.horse.DonkeyEntity;
-import net.minecraft.entity.monster.ZombieEntity;
-import net.minecraft.entity.monster.WitherSkeletonEntity;
-import net.minecraft.entity.monster.SkeletonEntity;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantment;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.WitherSkeleton;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.animal.horse.Mule;
+import net.minecraft.world.entity.animal.horse.Donkey;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.advancements.Advancement;
 
+import javax.annotation.Nullable;
+
 import java.util.Map;
 import java.util.Iterator;
-import java.util.HashMap;
 
+@Mod.EventBusSubscriber
 public class MoreSkullsProcedure {
-	@Mod.EventBusSubscriber
-	private static class GlobalTrigger {
-		@SubscribeEvent
-		public static void onEntityDeath(LivingDeathEvent event) {
-			if (event != null && event.getEntity() != null) {
-				Entity entity = event.getEntity();
-				Entity sourceentity = event.getSource().getTrueSource();
-				double i = entity.getPosX();
-				double j = entity.getPosY();
-				double k = entity.getPosZ();
-				World world = entity.world;
-				Map<String, Object> dependencies = new HashMap<>();
-				dependencies.put("x", i);
-				dependencies.put("y", j);
-				dependencies.put("z", k);
-				dependencies.put("world", world);
-				dependencies.put("entity", entity);
-				dependencies.put("sourceentity", sourceentity);
-				dependencies.put("event", event);
-				executeProcedure(dependencies);
-			}
+	@SubscribeEvent
+	public static void onEntityDeath(LivingDeathEvent event) {
+		if (event != null && event.getEntity() != null) {
+			execute(event, event.getEntity().level, event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), event.getEntity(),
+					event.getSource().getEntity());
 		}
 	}
 
-	public static void executeProcedure(Map<String, Object> dependencies) {
-		if (dependencies.get("world") == null) {
-			if (!dependencies.containsKey("world"))
-				JeanMod.LOGGER.warn("Failed to load dependency world for procedure MoreSkulls!");
+	public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, Entity sourceentity) {
+		execute(null, world, x, y, z, entity, sourceentity);
+	}
+
+	private static void execute(@Nullable Event event, LevelAccessor world, double x, double y, double z, Entity entity, Entity sourceentity) {
+		if (entity == null || sourceentity == null)
 			return;
-		}
-		if (dependencies.get("x") == null) {
-			if (!dependencies.containsKey("x"))
-				JeanMod.LOGGER.warn("Failed to load dependency x for procedure MoreSkulls!");
-			return;
-		}
-		if (dependencies.get("y") == null) {
-			if (!dependencies.containsKey("y"))
-				JeanMod.LOGGER.warn("Failed to load dependency y for procedure MoreSkulls!");
-			return;
-		}
-		if (dependencies.get("z") == null) {
-			if (!dependencies.containsKey("z"))
-				JeanMod.LOGGER.warn("Failed to load dependency z for procedure MoreSkulls!");
-			return;
-		}
-		if (dependencies.get("entity") == null) {
-			if (!dependencies.containsKey("entity"))
-				JeanMod.LOGGER.warn("Failed to load dependency entity for procedure MoreSkulls!");
-			return;
-		}
-		if (dependencies.get("sourceentity") == null) {
-			if (!dependencies.containsKey("sourceentity"))
-				JeanMod.LOGGER.warn("Failed to load dependency sourceentity for procedure MoreSkulls!");
-			return;
-		}
-		IWorld world = (IWorld) dependencies.get("world");
-		double x = dependencies.get("x") instanceof Integer ? (int) dependencies.get("x") : (double) dependencies.get("x");
-		double y = dependencies.get("y") instanceof Integer ? (int) dependencies.get("y") : (double) dependencies.get("y");
-		double z = dependencies.get("z") instanceof Integer ? (int) dependencies.get("z") : (double) dependencies.get("z");
-		Entity entity = (Entity) dependencies.get("entity");
-		Entity sourceentity = (Entity) dependencies.get("sourceentity");
 		ItemStack gift = ItemStack.EMPTY;
-		if (((sourceentity instanceof LivingEntity) ? ((LivingEntity) sourceentity).getItemStackFromSlot(EquipmentSlotType.HEAD) : ItemStack.EMPTY)
-				.getItem() == DragonSkullBlock.block.asItem()) {
-			if (((sourceentity instanceof LivingEntity) ? ((LivingEntity) sourceentity).getHeldItemMainhand() : ItemStack.EMPTY)
-					.getItem() == DragonSkullItemItem.block) {
-				if ((EnchantmentHelper.getEnchantmentLevel(Enchantments.LOOTING,
-						((sourceentity instanceof LivingEntity) ? ((LivingEntity) sourceentity).getHeldItemMainhand() : ItemStack.EMPTY)) != 0)) {
-					if (Math.random() < 0.31) {
-						if (entity instanceof WitherSkeletonEntity) {
+		if ((sourceentity instanceof LivingEntity _entGetArmor ? _entGetArmor.getItemBySlot(EquipmentSlot.HEAD) : ItemStack.EMPTY)
+				.getItem() == JeanModBlocks.DRAGON_SKULL.get().asItem()) {
+			if ((sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY)
+					.getItem() == JeanModItems.DRAGON_SKULL_ITEM.get()) {
+				if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING,
+						(sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY)) != 0) {
+					if (Math.random() < 0.21) {
+						if (entity instanceof WitherSkeleton) {
 							gift = (new ItemStack(Items.WITHER_SKELETON_SKULL).copy());
-							((gift)).setDisplayName(new StringTextComponent("Gift From Jean, Wither skull"));
-							if (world instanceof World && !world.isRemote()) {
-								ItemEntity entityToSpawn = new ItemEntity((World) world, x, y, z, (gift));
-								entityToSpawn.setPickupDelay((int) 10);
-								world.addEntity(entityToSpawn);
+							(gift).setHoverName(new TextComponent("Gift From Jean, Wither skull"));
+							if (world instanceof Level _level && !_level.isClientSide()) {
+								ItemEntity entityToSpawn = new ItemEntity(_level, x, y, z, gift);
+								entityToSpawn.setPickUpDelay(10);
+								_level.addFreshEntity(entityToSpawn);
 							}
 						}
-						if (entity instanceof SkeletonEntity) {
+						if (entity instanceof Skeleton) {
 							gift = (new ItemStack(Items.SKELETON_SKULL).copy());
-							((gift)).setDisplayName(new StringTextComponent("Gift From Jean, Skeleton skull"));
-							if (world instanceof World && !world.isRemote()) {
-								ItemEntity entityToSpawn = new ItemEntity((World) world, x, y, z, (gift));
-								entityToSpawn.setPickupDelay((int) 10);
-								world.addEntity(entityToSpawn);
+							(gift).setHoverName(new TextComponent("Gift From Jean, Skeleton skull"));
+							if (world instanceof Level _level && !_level.isClientSide()) {
+								ItemEntity entityToSpawn = new ItemEntity(_level, x, y, z, gift);
+								entityToSpawn.setPickUpDelay(10);
+								_level.addFreshEntity(entityToSpawn);
 							}
 						}
-						if (entity instanceof CreeperEntity) {
+						if (entity instanceof Creeper) {
 							gift = (new ItemStack(Items.CREEPER_HEAD).copy());
-							((gift)).setDisplayName(new StringTextComponent("Gift From Jean, Creeper skull"));
-							if (world instanceof World && !world.isRemote()) {
-								ItemEntity entityToSpawn = new ItemEntity((World) world, x, y, z, (gift));
-								entityToSpawn.setPickupDelay((int) 10);
-								world.addEntity(entityToSpawn);
+							(gift).setHoverName(new TextComponent("Gift From Jean, Creeper skull"));
+							if (world instanceof Level _level && !_level.isClientSide()) {
+								ItemEntity entityToSpawn = new ItemEntity(_level, x, y, z, gift);
+								entityToSpawn.setPickUpDelay(10);
+								_level.addFreshEntity(entityToSpawn);
 							}
 						}
-						if (entity instanceof ZombieEntity) {
-							gift = (new ItemStack(Items.ZOMBIE_HEAD).copy());
-							((gift)).setDisplayName(new StringTextComponent("Gift From Jean, Zombie skull"));
-							if (world instanceof World && !world.isRemote()) {
-								ItemEntity entityToSpawn = new ItemEntity((World) world, x, y, z, (gift));
-								entityToSpawn.setPickupDelay((int) 10);
-								world.addEntity(entityToSpawn);
+						if (entity instanceof Zombie) {
+							gift = (new ItemStack(Blocks.ZOMBIE_HEAD).copy());
+							(gift).setHoverName(new TextComponent("Gift From Jean, Zombie skull"));
+							if (world instanceof Level _level && !_level.isClientSide()) {
+								ItemEntity entityToSpawn = new ItemEntity(_level, x, y, z, gift);
+								entityToSpawn.setPickUpDelay(10);
+								_level.addFreshEntity(entityToSpawn);
 							}
 						}
 					}
-					if (entity instanceof DonkeyEntity) {
-						if (entity instanceof ServerPlayerEntity) {
-							Advancement _adv = ((MinecraftServer) ((ServerPlayerEntity) entity).server).getAdvancementManager()
-									.getAdvancement(new ResourceLocation("jean:jean_cry"));
-							AdvancementProgress _ap = ((ServerPlayerEntity) entity).getAdvancements().getProgress(_adv);
+					if (entity instanceof Donkey) {
+						if (entity instanceof ServerPlayer _player) {
+							Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("jean:jean_cry"));
+							AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
 							if (!_ap.isDone()) {
-								Iterator _iterator = _ap.getRemaningCriteria().iterator();
-								while (_iterator.hasNext()) {
-									String _criterion = (String) _iterator.next();
-									((ServerPlayerEntity) entity).getAdvancements().grantCriterion(_adv, _criterion);
-								}
+								Iterator _iterator = _ap.getRemainingCriteria().iterator();
+								while (_iterator.hasNext())
+									_player.getAdvancements().award(_adv, (String) _iterator.next());
 							}
 						}
 						{
-							Map<Enchantment, Integer> _enchantments = EnchantmentHelper.getEnchantments(
-									((sourceentity instanceof LivingEntity) ? ((LivingEntity) sourceentity).getHeldItemMainhand() : ItemStack.EMPTY));
-							if (_enchantments.containsKey(Enchantments.LOOTING)) {
-								_enchantments.remove(Enchantments.LOOTING);
+							Map<Enchantment, Integer> _enchantments = EnchantmentHelper
+									.getEnchantments((sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY));
+							if (_enchantments.containsKey(Enchantments.MOB_LOOTING)) {
+								_enchantments.remove(Enchantments.MOB_LOOTING);
 								EnchantmentHelper.setEnchantments(_enchantments,
-										((sourceentity instanceof LivingEntity)
-												? ((LivingEntity) sourceentity).getHeldItemMainhand()
-												: ItemStack.EMPTY));
+										(sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY));
 							}
 						}
-						if (sourceentity instanceof LivingEntity) {
-							((LivingEntity) sourceentity).attackEntityFrom(new DamageSource("jean.lovekiller").setDamageBypassesArmor(),
-									(float) 9000);
-						}
+						if (sourceentity instanceof LivingEntity _entity)
+							_entity.hurt(new DamageSource("jean.lovekiller").bypassArmor(), 9000);
 					}
-					if (entity instanceof MuleEntity) {
-						if (entity instanceof ServerPlayerEntity) {
-							Advancement _adv = ((MinecraftServer) ((ServerPlayerEntity) entity).server).getAdvancementManager()
-									.getAdvancement(new ResourceLocation("jean:jean_cry"));
-							AdvancementProgress _ap = ((ServerPlayerEntity) entity).getAdvancements().getProgress(_adv);
+					if (entity instanceof Mule) {
+						if (entity instanceof ServerPlayer _player) {
+							Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("jean:jean_cry"));
+							AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
 							if (!_ap.isDone()) {
-								Iterator _iterator = _ap.getRemaningCriteria().iterator();
-								while (_iterator.hasNext()) {
-									String _criterion = (String) _iterator.next();
-									((ServerPlayerEntity) entity).getAdvancements().grantCriterion(_adv, _criterion);
-								}
+								Iterator _iterator = _ap.getRemainingCriteria().iterator();
+								while (_iterator.hasNext())
+									_player.getAdvancements().award(_adv, (String) _iterator.next());
 							}
 						}
 						{
-							Map<Enchantment, Integer> _enchantments = EnchantmentHelper.getEnchantments(
-									((sourceentity instanceof LivingEntity) ? ((LivingEntity) sourceentity).getHeldItemMainhand() : ItemStack.EMPTY));
-							if (_enchantments.containsKey(Enchantments.LOOTING)) {
-								_enchantments.remove(Enchantments.LOOTING);
+							Map<Enchantment, Integer> _enchantments = EnchantmentHelper
+									.getEnchantments((sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY));
+							if (_enchantments.containsKey(Enchantments.MOB_LOOTING)) {
+								_enchantments.remove(Enchantments.MOB_LOOTING);
 								EnchantmentHelper.setEnchantments(_enchantments,
-										((sourceentity instanceof LivingEntity)
-												? ((LivingEntity) sourceentity).getHeldItemMainhand()
-												: ItemStack.EMPTY));
+										(sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY));
 							}
 						}
-						if (sourceentity instanceof LivingEntity) {
-							((LivingEntity) sourceentity).attackEntityFrom(new DamageSource("jean.lovekiller").setDamageBypassesArmor(),
-									(float) 9000);
-						}
+						if (sourceentity instanceof LivingEntity _entity)
+							_entity.hurt(new DamageSource("jean.lovekiller").bypassArmor(), 9000);
 					}
 				}
 			}
 		} else {
-			if (((sourceentity instanceof LivingEntity) ? ((LivingEntity) sourceentity).getHeldItemMainhand() : ItemStack.EMPTY)
-					.getItem() == DragonSkullItemItem.block) {
-				if ((EnchantmentHelper.getEnchantmentLevel(Enchantments.LOOTING,
-						((sourceentity instanceof LivingEntity) ? ((LivingEntity) sourceentity).getHeldItemMainhand() : ItemStack.EMPTY)) != 0)) {
-					if (entity instanceof DonkeyEntity) {
-						if (sourceentity instanceof ServerPlayerEntity) {
-							Advancement _adv = ((MinecraftServer) ((ServerPlayerEntity) sourceentity).server).getAdvancementManager()
-									.getAdvancement(new ResourceLocation("jean:jean_cry"));
-							AdvancementProgress _ap = ((ServerPlayerEntity) sourceentity).getAdvancements().getProgress(_adv);
+			if ((sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY)
+					.getItem() == JeanModItems.DRAGON_SKULL_ITEM.get()) {
+				if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING,
+						(sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY)) != 0) {
+					if (entity instanceof Donkey) {
+						if (sourceentity instanceof ServerPlayer _player) {
+							Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("jean:jean_cry"));
+							AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
 							if (!_ap.isDone()) {
-								Iterator _iterator = _ap.getRemaningCriteria().iterator();
-								while (_iterator.hasNext()) {
-									String _criterion = (String) _iterator.next();
-									((ServerPlayerEntity) sourceentity).getAdvancements().grantCriterion(_adv, _criterion);
-								}
+								Iterator _iterator = _ap.getRemainingCriteria().iterator();
+								while (_iterator.hasNext())
+									_player.getAdvancements().award(_adv, (String) _iterator.next());
 							}
 						}
 						{
-							Map<Enchantment, Integer> _enchantments = EnchantmentHelper.getEnchantments(
-									((sourceentity instanceof LivingEntity) ? ((LivingEntity) sourceentity).getHeldItemMainhand() : ItemStack.EMPTY));
-							if (_enchantments.containsKey(Enchantments.LOOTING)) {
-								_enchantments.remove(Enchantments.LOOTING);
+							Map<Enchantment, Integer> _enchantments = EnchantmentHelper
+									.getEnchantments((sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY));
+							if (_enchantments.containsKey(Enchantments.MOB_LOOTING)) {
+								_enchantments.remove(Enchantments.MOB_LOOTING);
 								EnchantmentHelper.setEnchantments(_enchantments,
-										((sourceentity instanceof LivingEntity)
-												? ((LivingEntity) sourceentity).getHeldItemMainhand()
-												: ItemStack.EMPTY));
+										(sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY));
 							}
 						}
-						if (sourceentity instanceof LivingEntity) {
-							((LivingEntity) sourceentity).attackEntityFrom(new DamageSource("jean.lovekiller").setDamageBypassesArmor(),
-									(float) 9000);
-						}
+						if (sourceentity instanceof LivingEntity _entity)
+							_entity.hurt(new DamageSource("jean.lovekiller").bypassArmor(), 9000);
 					}
-					if (entity instanceof MuleEntity) {
-						if (sourceentity instanceof ServerPlayerEntity) {
-							Advancement _adv = ((MinecraftServer) ((ServerPlayerEntity) sourceentity).server).getAdvancementManager()
-									.getAdvancement(new ResourceLocation("jean:jean_cry"));
-							AdvancementProgress _ap = ((ServerPlayerEntity) sourceentity).getAdvancements().getProgress(_adv);
+					if (entity instanceof Mule) {
+						if (sourceentity instanceof ServerPlayer _player) {
+							Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("jean:jean_cry"));
+							AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
 							if (!_ap.isDone()) {
-								Iterator _iterator = _ap.getRemaningCriteria().iterator();
-								while (_iterator.hasNext()) {
-									String _criterion = (String) _iterator.next();
-									((ServerPlayerEntity) sourceentity).getAdvancements().grantCriterion(_adv, _criterion);
-								}
+								Iterator _iterator = _ap.getRemainingCriteria().iterator();
+								while (_iterator.hasNext())
+									_player.getAdvancements().award(_adv, (String) _iterator.next());
 							}
 						}
 						{
-							Map<Enchantment, Integer> _enchantments = EnchantmentHelper.getEnchantments(
-									((sourceentity instanceof LivingEntity) ? ((LivingEntity) sourceentity).getHeldItemMainhand() : ItemStack.EMPTY));
-							if (_enchantments.containsKey(Enchantments.LOOTING)) {
-								_enchantments.remove(Enchantments.LOOTING);
+							Map<Enchantment, Integer> _enchantments = EnchantmentHelper
+									.getEnchantments((sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY));
+							if (_enchantments.containsKey(Enchantments.MOB_LOOTING)) {
+								_enchantments.remove(Enchantments.MOB_LOOTING);
 								EnchantmentHelper.setEnchantments(_enchantments,
-										((sourceentity instanceof LivingEntity)
-												? ((LivingEntity) sourceentity).getHeldItemMainhand()
-												: ItemStack.EMPTY));
+										(sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY));
 							}
 						}
-						if (sourceentity instanceof LivingEntity) {
-							((LivingEntity) sourceentity).attackEntityFrom(new DamageSource("jean.lovekiller").setDamageBypassesArmor(),
-									(float) 9000);
-						}
+						if (sourceentity instanceof LivingEntity _entity)
+							_entity.hurt(new DamageSource("jean.lovekiller").bypassArmor(), 9000);
 					}
 				}
 			}

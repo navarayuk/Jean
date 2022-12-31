@@ -519,8 +519,8 @@
       "reauth",
       "jei"
     ],
-    "currentGenerator": "forge-1.16.5",
-    "credits": "CalixFoxUK for the idea, Mod creation BadKaiPanda",
+    "currentGenerator": "forge-1.18.2",
+    "credits": "CalixFoxUK for the idea, Mod creation BadKaiPanda,(NavaRayUK)",
     "modElementsPackage": "uk.co.kukki.jean",
     "lockBaseModFiles": false
   },

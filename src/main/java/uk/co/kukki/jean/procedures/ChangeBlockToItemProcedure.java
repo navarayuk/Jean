@@ -1,64 +1,43 @@
 package uk.co.kukki.jean.procedures;
 
-import uk.co.kukki.jean.item.DragonSkullItemItem;
-import uk.co.kukki.jean.block.DragonSkullBlock;
-import uk.co.kukki.jean.JeanMod;
+import uk.co.kukki.jean.init.JeanModItems;
+import uk.co.kukki.jean.init.JeanModBlocks;
 
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.event.TickEvent;
 
-import net.minecraft.world.World;
-import net.minecraft.world.IWorld;
-import net.minecraft.item.ItemStack;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
+
+import javax.annotation.Nullable;
 
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.Map;
-import java.util.HashMap;
 
+@Mod.EventBusSubscriber
 public class ChangeBlockToItemProcedure {
-	@Mod.EventBusSubscriber
-	private static class GlobalTrigger {
-		@SubscribeEvent
-		public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-			if (event.phase == TickEvent.Phase.END) {
-				Entity entity = event.player;
-				World world = entity.world;
-				double i = entity.getPosX();
-				double j = entity.getPosY();
-				double k = entity.getPosZ();
-				Map<String, Object> dependencies = new HashMap<>();
-				dependencies.put("x", i);
-				dependencies.put("y", j);
-				dependencies.put("z", k);
-				dependencies.put("world", world);
-				dependencies.put("entity", entity);
-				dependencies.put("event", event);
-				executeProcedure(dependencies);
-			}
+	@SubscribeEvent
+	public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+		if (event.phase == TickEvent.Phase.END) {
+			execute(event, event.player.level, event.player);
 		}
 	}
 
-	public static void executeProcedure(Map<String, Object> dependencies) {
-		if (dependencies.get("world") == null) {
-			if (!dependencies.containsKey("world"))
-				JeanMod.LOGGER.warn("Failed to load dependency world for procedure ChangeBlockToItem!");
+	public static void execute(LevelAccessor world, Entity entity) {
+		execute(null, world, entity);
+	}
+
+	private static void execute(@Nullable Event event, LevelAccessor world, Entity entity) {
+		if (entity == null)
 			return;
-		}
-		if (dependencies.get("entity") == null) {
-			if (!dependencies.containsKey("entity"))
-				JeanMod.LOGGER.warn("Failed to load dependency entity for procedure ChangeBlockToItem!");
-			return;
-		}
-		IWorld world = (IWorld) dependencies.get("world");
-		Entity entity = (Entity) dependencies.get("entity");
 		ItemStack blocks = ItemStack.EMPTY;
 		double cccc = 0;
 		cccc = 0;
@@ -68,45 +47,43 @@ public class ChangeBlockToItemProcedure {
 			if (_iitemhandlerref.get() != null) {
 				for (int _idx = 0; _idx < _iitemhandlerref.get().getSlots(); _idx++) {
 					ItemStack itemstackiterator = _iitemhandlerref.get().getStackInSlot(_idx).copy();
-					blocks = new ItemStack(DragonSkullItemItem.block);
+					blocks = new ItemStack(JeanModItems.DRAGON_SKULL_ITEM.get());
 					if (cccc < 100) {
-						if (itemstackiterator.getItem() == DragonSkullBlock.block.asItem()
-								&& (EnchantmentHelper.getEnchantmentLevel(Enchantments.LOOTING, itemstackiterator) != 0)) {
-							if (entity instanceof PlayerEntity) {
+						if (itemstackiterator.getItem() == JeanModBlocks.DRAGON_SKULL.get().asItem()
+								&& EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING, itemstackiterator) != 0) {
+							if (entity instanceof Player _player) {
 								ItemStack _stktoremove = itemstackiterator;
-								((PlayerEntity) entity).inventory.func_234564_a_(p -> _stktoremove.getItem() == p.getItem(), (int) cccc,
-										((PlayerEntity) entity).container.func_234641_j_());
+								_player.getInventory().clearOrCountMatchingItems(p -> _stktoremove.getItem() == p.getItem(), (int) cccc,
+										_player.inventoryMenu.getCraftSlots());
 							}
-							blocks = new ItemStack(DragonSkullItemItem.block);
-							((blocks)).addEnchantment(Enchantments.LOOTING,
-									(int) (EnchantmentHelper.getEnchantmentLevel(Enchantments.LOOTING, itemstackiterator)));
+							blocks = new ItemStack(JeanModItems.DRAGON_SKULL_ITEM.get());
+							(blocks).enchant(Enchantments.MOB_LOOTING,
+									EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING, itemstackiterator));
 							{
-								final ItemStack _setstack = (blocks);
-								final int _sltid = (int) (cccc);
-								_setstack.setCount((int) 1);
+								final int _slotid = (int) cccc;
+								final ItemStack _setstack = blocks;
+								_setstack.setCount(1);
 								entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
-									if (capability instanceof IItemHandlerModifiable) {
-										((IItemHandlerModifiable) capability).setStackInSlot(_sltid, _setstack);
-									}
+									if (capability instanceof IItemHandlerModifiable _modHandler)
+										_modHandler.setStackInSlot(_slotid, _setstack);
 								});
 							}
 						}
-						if (itemstackiterator.getItem() == DragonSkullItemItem.block
-								&& !(EnchantmentHelper.getEnchantmentLevel(Enchantments.LOOTING, itemstackiterator) != 0)) {
-							blocks = new ItemStack(DragonSkullBlock.block);
+						if (itemstackiterator.getItem() == JeanModItems.DRAGON_SKULL_ITEM.get()
+								&& !(EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING, itemstackiterator) != 0)) {
+							blocks = new ItemStack(JeanModBlocks.DRAGON_SKULL.get());
 							{
-								final ItemStack _setstack = (blocks);
-								final int _sltid = (int) (cccc);
-								_setstack.setCount((int) 1);
+								final int _slotid = (int) cccc;
+								final ItemStack _setstack = blocks;
+								_setstack.setCount(1);
 								entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
-									if (capability instanceof IItemHandlerModifiable) {
-										((IItemHandlerModifiable) capability).setStackInSlot(_sltid, _setstack);
-									}
+									if (capability instanceof IItemHandlerModifiable _modHandler)
+										_modHandler.setStackInSlot(_slotid, _setstack);
 								});
 							}
 						}
 					}
-					cccc = (cccc + 1);
+					cccc = cccc + 1;
 				}
 			}
 		}

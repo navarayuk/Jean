@@ -7,8 +7,8 @@ repositories {
     }
 }
 dependencies {
-   compileOnly fg.deobf("curse.maven:jade-324717:3597364")
-   runtimeOnly fg.deobf("curse.maven:jade-324717:3597364")
+   compileOnly fg.deobf("curse.maven:jade-324717:3681449")
+   runtimeOnly fg.deobf("curse.maven:jade-324717:3681449")
 }
 
 repositories {
@@ -20,8 +20,8 @@ repositories {
     }
 }
 dependencies {
-   compileOnly fg.deobf("curse.maven:reauth-237701:4120078")
-   runtimeOnly fg.deobf("curse.maven:reauth-237701:4120078")
+   compileOnly fg.deobf("curse.maven:reauth-237701:4120081")
+   runtimeOnly fg.deobf("curse.maven:reauth-237701:4120081")
 }
 
 repositories {
@@ -38,7 +38,7 @@ repositories {
 }
 
 dependencies {
-  compileOnly fg.deobf("mezz.jei:jei-1.16.5:7.7.1.153:api")
-  runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:7.7.1.153")
+  compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.1.255:api")
+  runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.1.255")
 }
 

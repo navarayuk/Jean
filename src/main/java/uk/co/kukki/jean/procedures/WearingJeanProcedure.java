@@ -1,124 +1,81 @@
 package uk.co.kukki.jean.procedures;
 
-import uk.co.kukki.jean.block.DragonSkullBlock;
-import uk.co.kukki.jean.JeanMod;
+import uk.co.kukki.jean.init.JeanModBlocks;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.common.MinecraftForge;
 
-import net.minecraft.world.World;
-import net.minecraft.world.IWorld;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.monster.WitherSkeletonEntity;
-import net.minecraft.entity.monster.SkeletonEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.enchantment.Enchantments;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.monster.WitherSkeleton;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.util.Mth;
+
+import javax.annotation.Nullable;
 
 import java.util.Random;
-import java.util.Map;
-import java.util.HashMap;
 
+@Mod.EventBusSubscriber
 public class WearingJeanProcedure {
-	@Mod.EventBusSubscriber
-	private static class GlobalTrigger {
-		@SubscribeEvent
-		public static void onEntitySetsAttackTarget(LivingSetAttackTargetEvent event) {
-			LivingEntity entity = event.getTarget();
-			LivingEntity sourceentity = event.getEntityLiving();
-			Map<String, Object> dependencies = new HashMap<>();
-			dependencies.put("x", sourceentity.getPosX());
-			dependencies.put("y", sourceentity.getPosY());
-			dependencies.put("z", sourceentity.getPosZ());
-			dependencies.put("world", sourceentity.getEntityWorld());
-			dependencies.put("entity", entity);
-			dependencies.put("sourceentity", sourceentity);
-			dependencies.put("event", event);
-			executeProcedure(dependencies);
-		}
+	@SubscribeEvent
+	public static void onEntitySetsAttackTarget(LivingSetAttackTargetEvent event) {
+		execute(event, event.getEntityLiving().level, event.getEntityLiving().getX(), event.getEntityLiving().getY(), event.getEntityLiving().getZ(),
+				event.getTarget(), event.getEntityLiving());
 	}
 
-	public static ActionResultType executeProcedure(Map<String, Object> dependencies) {
-		if (dependencies.get("world") == null) {
-			if (!dependencies.containsKey("world"))
-				JeanMod.LOGGER.warn("Failed to load dependency world for procedure WearingJean!");
-			return ActionResultType.PASS;
-		}
-		if (dependencies.get("x") == null) {
-			if (!dependencies.containsKey("x"))
-				JeanMod.LOGGER.warn("Failed to load dependency x for procedure WearingJean!");
-			return ActionResultType.PASS;
-		}
-		if (dependencies.get("y") == null) {
-			if (!dependencies.containsKey("y"))
-				JeanMod.LOGGER.warn("Failed to load dependency y for procedure WearingJean!");
-			return ActionResultType.PASS;
-		}
-		if (dependencies.get("z") == null) {
-			if (!dependencies.containsKey("z"))
-				JeanMod.LOGGER.warn("Failed to load dependency z for procedure WearingJean!");
-			return ActionResultType.PASS;
-		}
-		if (dependencies.get("entity") == null) {
-			if (!dependencies.containsKey("entity"))
-				JeanMod.LOGGER.warn("Failed to load dependency entity for procedure WearingJean!");
-			return ActionResultType.PASS;
-		}
-		if (dependencies.get("sourceentity") == null) {
-			if (!dependencies.containsKey("sourceentity"))
-				JeanMod.LOGGER.warn("Failed to load dependency sourceentity for procedure WearingJean!");
-			return ActionResultType.PASS;
-		}
-		IWorld world = (IWorld) dependencies.get("world");
-		double x = dependencies.get("x") instanceof Integer ? (int) dependencies.get("x") : (double) dependencies.get("x");
-		double y = dependencies.get("y") instanceof Integer ? (int) dependencies.get("y") : (double) dependencies.get("y");
-		double z = dependencies.get("z") instanceof Integer ? (int) dependencies.get("z") : (double) dependencies.get("z");
-		Entity entity = (Entity) dependencies.get("entity");
-		Entity sourceentity = (Entity) dependencies.get("sourceentity");
+	public static InteractionResult execute(LevelAccessor world, double x, double y, double z, Entity entity, Entity sourceentity) {
+		return execute(null, world, x, y, z, entity, sourceentity);
+	}
+
+	private static InteractionResult execute(@Nullable Event event, LevelAccessor world, double x, double y, double z, Entity entity,
+			Entity sourceentity) {
+		if (entity == null || sourceentity == null)
+			return InteractionResult.PASS;
 		ItemStack DropMe = ItemStack.EMPTY;
-		if (sourceentity instanceof SkeletonEntity || sourceentity instanceof WitherSkeletonEntity) {
-			if (((entity instanceof LivingEntity) ? ((LivingEntity) entity).getItemStackFromSlot(EquipmentSlotType.HEAD) : ItemStack.EMPTY)
-					.getItem() == DragonSkullBlock.block.asItem()) {
-				if (((sourceentity instanceof LivingEntity) ? ((LivingEntity) sourceentity).getHeldItemMainhand() : ItemStack.EMPTY)
-						.getItem() == Items.BOW) {
-					DropMe = (((sourceentity instanceof LivingEntity) ? ((LivingEntity) sourceentity).getHeldItemMainhand() : ItemStack.EMPTY)
-							.copy());
-					(((sourceentity instanceof LivingEntity) ? ((LivingEntity) sourceentity).getHeldItemMainhand() : ItemStack.EMPTY))
-							.shrink((int) 1);
-					((DropMe)).addEnchantment(Enchantments.LOYALTY, (int) 1);
-					((DropMe)).setCount((int) 1);
-					if (world instanceof World && !world.isRemote()) {
-						ItemEntity entityToSpawn = new ItemEntity((World) world, x, y, z, (DropMe));
-						entityToSpawn.setPickupDelay((int) 10);
-						world.addEntity(entityToSpawn);
+		if (sourceentity instanceof Skeleton || sourceentity instanceof WitherSkeleton) {
+			if ((entity instanceof LivingEntity _entGetArmor ? _entGetArmor.getItemBySlot(EquipmentSlot.HEAD) : ItemStack.EMPTY)
+					.getItem() == JeanModBlocks.DRAGON_SKULL.get().asItem()) {
+				if ((sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getItem() == Items.BOW) {
+					DropMe = ((sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).copy());
+					((sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY)).shrink(1);
+					(DropMe).enchant(Enchantments.LOYALTY, 1);
+					(DropMe).setCount(1);
+					if (world instanceof Level _level && !_level.isClientSide()) {
+						ItemEntity entityToSpawn = new ItemEntity(_level, x, y, z, DropMe);
+						entityToSpawn.setPickUpDelay(10);
+						_level.addFreshEntity(entityToSpawn);
 					}
 					DropMe = (new ItemStack(Items.ARROW).copy());
-					((DropMe)).setCount((int) (MathHelper.nextInt(new Random(), 1, 10)));
-					if (world instanceof World && !world.isRemote()) {
-						ItemEntity entityToSpawn = new ItemEntity((World) world, x, y, z, (DropMe));
-						entityToSpawn.setPickupDelay((int) 10);
-						world.addEntity(entityToSpawn);
+					(DropMe).setCount(Mth.nextInt(new Random(), 1, 10));
+					if (world instanceof Level _level && !_level.isClientSide()) {
+						ItemEntity entityToSpawn = new ItemEntity(_level, x, y, z, DropMe);
+						entityToSpawn.setPickUpDelay(10);
+						_level.addFreshEntity(entityToSpawn);
 					}
-					if (entity instanceof PlayerEntity) {
-						((PlayerEntity) entity).abilities.disableDamage = (true);
-						((PlayerEntity) entity).sendPlayerAbilities();
+					if (entity instanceof Player _player) {
+						_player.getAbilities().invulnerable = (true);
+						_player.onUpdateAbilities();
 					}
 					new Object() {
 						private int ticks = 0;
 						private float waitTicks;
-						private IWorld world;
+						private LevelAccessor world;
 
-						public void start(IWorld world, int waitTicks) {
+						public void start(LevelAccessor world, int waitTicks) {
 							this.waitTicks = waitTicks;
 							MinecraftForge.EVENT_BUS.register(this);
 							this.world = world;
@@ -134,36 +91,33 @@ public class WearingJeanProcedure {
 						}
 
 						private void run() {
-							if (entity instanceof PlayerEntity) {
-								((PlayerEntity) entity).abilities.disableDamage = (false);
-								((PlayerEntity) entity).sendPlayerAbilities();
+							if (entity instanceof Player _player) {
+								_player.getAbilities().invulnerable = (false);
+								_player.onUpdateAbilities();
 							}
 							MinecraftForge.EVENT_BUS.unregister(this);
 						}
-					}.start(world, (int) 20);
+					}.start(world, 20);
 				}
-				if (((sourceentity instanceof LivingEntity) ? ((LivingEntity) sourceentity).getHeldItemMainhand() : ItemStack.EMPTY)
-						.getItem() instanceof SwordItem) {
-					DropMe = (((sourceentity instanceof LivingEntity) ? ((LivingEntity) sourceentity).getHeldItemMainhand() : ItemStack.EMPTY)
-							.copy());
-					(((sourceentity instanceof LivingEntity) ? ((LivingEntity) sourceentity).getHeldItemMainhand() : ItemStack.EMPTY))
-							.shrink((int) 1);
-					((DropMe)).setCount((int) 1);
-					if (world instanceof World && !world.isRemote()) {
-						ItemEntity entityToSpawn = new ItemEntity((World) world, x, y, z, (DropMe));
-						entityToSpawn.setPickupDelay((int) 10);
-						world.addEntity(entityToSpawn);
+				if ((sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getItem() instanceof SwordItem) {
+					DropMe = ((sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).copy());
+					((sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY)).shrink(1);
+					(DropMe).setCount(1);
+					if (world instanceof Level _level && !_level.isClientSide()) {
+						ItemEntity entityToSpawn = new ItemEntity(_level, x, y, z, DropMe);
+						entityToSpawn.setPickUpDelay(10);
+						_level.addFreshEntity(entityToSpawn);
 					}
-					if (entity instanceof PlayerEntity) {
-						((PlayerEntity) entity).abilities.disableDamage = (true);
-						((PlayerEntity) entity).sendPlayerAbilities();
+					if (entity instanceof Player _player) {
+						_player.getAbilities().invulnerable = (true);
+						_player.onUpdateAbilities();
 					}
 					new Object() {
 						private int ticks = 0;
 						private float waitTicks;
-						private IWorld world;
+						private LevelAccessor world;
 
-						public void start(IWorld world, int waitTicks) {
+						public void start(LevelAccessor world, int waitTicks) {
 							this.waitTicks = waitTicks;
 							MinecraftForge.EVENT_BUS.register(this);
 							this.world = world;
@@ -179,16 +133,16 @@ public class WearingJeanProcedure {
 						}
 
 						private void run() {
-							if (entity instanceof PlayerEntity) {
-								((PlayerEntity) entity).abilities.disableDamage = (false);
-								((PlayerEntity) entity).sendPlayerAbilities();
+							if (entity instanceof Player _player) {
+								_player.getAbilities().invulnerable = (false);
+								_player.onUpdateAbilities();
 							}
 							MinecraftForge.EVENT_BUS.unregister(this);
 						}
-					}.start(world, (int) 20);
+					}.start(world, 20);
 				}
 			}
 		}
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 }
